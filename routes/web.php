@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CreditCardController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,11 @@ Route::prefix('credit-cards')->middleware('auth')->group(function()
     Route::get('', [CreditCardController::class, 'index'])->name('credit_card.index');
     Route::delete('/{credit_card}', [CreditCardController::class, 'destroy'])->name('credit_card.destroy');
     Route::put('/{credit_card}', [CreditCardController::class, 'update'])->name('credit_card.update');
+});
+
+Route::prefix('users')->middleware('auth')->group(function()
+{
+    Route::get('',[UserController::class, 'index'])->name('users.index');
 });
 
 

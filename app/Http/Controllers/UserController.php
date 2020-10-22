@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,8 +16,12 @@ class UserController extends Controller
      * @param  \App\Models\User  $model
      * @return \Illuminate\View\View
      */
-    public function index(User $model)
+    public function index(Request $request)
     {
-        return view('users.index', ['users' => $model->paginate(15)]);
+        $users = DB::table('users')
+            ->select('*')
+            ->where('name', 'LIKE', '%'. $request->param .'%')
+            ->get();
+        return $users;
     }
 }

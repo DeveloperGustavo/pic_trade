@@ -128,9 +128,12 @@
 
         function enable_loader()
         {
-            $('.loader').show();
             $('#carousel_user').hide();
+            $('#carousel_user').html("");
+            $('.loader').show();
+
             var param = $('#search').val();
+
             $.ajax({
                 method: "GET",
                 url: '{{ route('users.index') }}',
@@ -141,11 +144,18 @@
                 success: function (e)
                 {
                     var i = 0;
-                    const div = document.getElementById('carousel_user');
                     $.each(e, function()
                     {
+                        const div = document.createElement('div');
+                        var a = div;
+                        console.log(a);
+                        console.log('merda');
+                        if(i <= 0)
+                            div.className = 'carousel-item active';
+                        else
+                            div.className = 'carousel-item';
+                        console.log(div);
                         div.innerHTML =
-                            '<div class="carousel-item @if($i <= 1) active @endif">' +
                             '   <div class="col-md-4">' +
                             '      <div class="card card-body">' +
                             '         <div class="col-md-12">' +
@@ -160,7 +170,7 @@
                             '                     <div class="block block-four"></div>' +
                             '                     <a href="#">' +
                             '                        <img class="avatar" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQq2nCYcpvp7zv81gos09TJ3Z_-HpoqFjHJaw&usqp=CAU" alt="">' +
-                            '                        <h5 class="title">' + e[0].name + '</h5>' +
+                            '                        <h5 class="title">' + e[i].name + '</h5>' +
                             '                     </a>' +
                             '                  </div>' +
                             '               </div>' +
@@ -181,16 +191,16 @@
                             '            </div>' +
                             '         </div>' +
                             '      </div>' +
-                            '   </div>' +
-                            '</div>';
+                            '   </div>';
                         i++;
+                        document.getElementById('carousel_user').appendChild(div);
                     });
+                    console.log(document.getElementById('carousel_user'));
                     $('.loader').hide();
                     $('#carousel_user').show();
-                    console.log(div);
                 },
                 error: function(e) {
-                    console.log('Erro na chamada ' . e);
+                    console.log('Erro na chamada ' + e);
                 }
             })
 

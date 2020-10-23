@@ -15,10 +15,9 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->string('agency');
-            $table->string('agency_dg')->nullable();
-            $table->string('account_number');
-            $table->string('account_dg')->nullable();
+            $table->string('agency')->unique();
+            $table->string('account_number')->unique();
+            $table->string('account_dg');
             $table->float('balance');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')

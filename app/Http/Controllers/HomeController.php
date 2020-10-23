@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -24,6 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::all();
-        return view('dashboard', compact('users'));
+        $account = Account::where('user_id', Auth::id())->first();
+        return view('dashboard', compact('users', 'account'));
     }
 }

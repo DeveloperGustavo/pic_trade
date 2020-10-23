@@ -66,7 +66,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $faker = Factory::class;
+        $faker = \Faker\Factory::create();
         try
         {
             $user = User::create([
@@ -77,8 +77,8 @@ class RegisterController extends Controller
             ]);
             if($user)
                 Account::create([
-                    'agency'            => $faker->unique(true)->numberBetween(0, 99999),
-                    'account_number'    => $faker->unique(true)->numberBetween(0, 9999),
+                    'agency'            => $faker->unique(true)->numberBetween(0, 9999),
+                    'account_number'    => $faker->unique(true)->numberBetween(0, 99999),
                     'account_dg'        => $faker->numberBetween(0, 10),
                     'balance'           => 0,
                     'user_id'           => $user->id,
@@ -88,7 +88,7 @@ class RegisterController extends Controller
         catch(Exception $e)
         {
             return back();
-        }        
-        
+        }
+
     }
 }

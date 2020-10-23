@@ -52,4 +52,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(Perfil::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

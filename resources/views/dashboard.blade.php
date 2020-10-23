@@ -5,16 +5,19 @@
         <div class="col-lg-4">
             <div class="card card-chart">
                 <div class="card-header">
-                    <h5 class="card-category">Total em pagamentos</h5>
-                    <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> 763,215</h3>
+                    <h5 class="card-category">Dados bancários</h5>
+                    <h6 class="card-title"><i class="tim-icons icon-minimal-right text-primary"></i> <b>Agência:</b> {{ $account->agency }} / <b>Conta:</b> {{ $account->account_number }}-{{ $account->account_dg }}</h6>
+                    <h6 class="card-title"><i class="tim-icons icon-money-coins text-primary"></i>
+                        Saldo atual: R$ <span style="@if($account->balance < 0)color: red @else color: lightgreen @endif">{{ number_format($account->balance, 2, ',', '.') }}</span>
+                    </h6>
                 </div>
             </div>
         </div>
         <div class="col-lg-4">
             <div class="card card-chart">
                 <div class="card-header">
-                    <h5 class="card-category">Saldo em conta</h5>
-                    <h3 class="card-title"><i class="tim-icons icon-delivery-fast text-info"></i> 3,500€</h3>
+                    <h5 class="card-category">Total em pagamentos</h5>
+                    <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> 763,215</h3>
                 </div>
             </div>
         </div>

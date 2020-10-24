@@ -13,7 +13,7 @@ class TransactionRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,18 @@ class TransactionRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'credit_card_id'    => 'required',
+            'user_to_id'      => 'required',
+            'transaction_value' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'credit_card_id.required'   => 'O cartão de crédito é obrigatório.',
+            'user_from_id'              => 'Informe um amigo para pagamento.',
+            'transaction_value'         => 'Informe o valor que deseja efetuar o pagamento'
         ];
     }
 }

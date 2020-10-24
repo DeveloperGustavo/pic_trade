@@ -1860,11 +1860,19 @@ pre code {
 }
 
 .form-control:focus {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(28, 28, 28, 0.8);
   background-color: #ffffff;
   border-color: rgba(50, 151, 211, 0.25);
   outline: 0;
-  box-shadow: none, none;
+  box-shadow: none;
+}
+
+.form-group .edition {
+    color: rgba(28, 28, 28, 0.8);
+    background-color: #ffffff;
+    border-color: rgba(50, 151, 211, 0.25);
+    outline: 0;
+    box-shadow: none;
 }
 
 .form-control::placeholder {
@@ -1876,11 +1884,6 @@ pre code {
 .form-control[readonly] {
   background-color: #e9ecef;
   opacity: 1;
-}
-
-select.form-control:focus::-ms-value {
-  color: rgba(255, 255, 255, 0.8);
-  background-color: transparent;
 }
 
 .form-control-file,

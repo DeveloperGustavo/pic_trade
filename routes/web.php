@@ -63,7 +63,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(
 
 Route::prefix('transactions')->middleware('auth')->group(function()
 {
-    Route::post('',['as' => 'transaction.store', 'uses' => 'TransactionController@store']);
+    Route::post('', [TransactionController::class, 'store'])->name('transaction.store');
 });
 
 Route::prefix('credit-cards')->middleware('auth')->group(function()

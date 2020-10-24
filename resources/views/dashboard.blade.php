@@ -8,7 +8,7 @@
                     <h5 class="card-category">Dados bancários</h5>
                     <h6 class="card-title"><i class="tim-icons icon-minimal-right text-primary"></i> <b>Agência:</b> {{ $account->agency }} / <b>Conta:</b> {{ $account->account_number }}-{{ $account->account_dg }}</h6>
                     <h6 class="card-title"><i class="tim-icons icon-money-coins text-primary"></i>
-                        Saldo atual: R$ <span style="@if($account->balance < 0)color: red @else color: lightgreen @endif">{{ number_format($account->balance, 2, ',', '.') }}</span>
+                        Saldo atual: R$ <span style="@if($balance < 0)color: red @else color: lightgreen @endif">{{ number_format($balance, 2, ',', '.') }}</span>
                     </h6>
                 </div>
             </div>
@@ -17,7 +17,7 @@
             <div class="card card-chart">
                 <div class="card-header">
                     <h5 class="card-category">Total em pagamentos</h5>
-                    <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> 763,215</h3>
+                    <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> R$ {{ number_format($payments, 2, ',', '.') }}</h3>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
             <div class="card card-chart">
                 <div class="card-header">
                     <h5 class="card-category">Total recebido</h5>
-                    <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> 12,100K</h3>
+                    <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> R$ {{ number_format($received, 2, ',', '.') }}</h3>
                 </div>
             </div>
         </div>
@@ -40,18 +40,27 @@
                 {{--Form de pesquisa--}}
                 <form action="">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-10">
                             <input type="text" class="form-control" id="search" name="search" placeholder="Faça sua pesquisa">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-2">
                             <button class="btn btn-primary" type="button" onclick="enable_loader()"><i class="tim-icons icon-zoom-split"></i></button>
                         </div>
                     </div>
                 </form>
                 {{--Fim do form de pesquisa--}}
-                <form action="" method="POST">
+                <form action="{{ route('transaction.store') }}" method="POST">
                     <div class="loader"></div>
                     @csrf
+                    <div class="form-group">
+                        <label for="credit_card_id">Selecione o cartão de crédito</label>
+                        <select class="form-control" id="credit_card_id" name="credit_card_id">
+                            <option value="" selected disabled>- Selecione -</option>
+                            @foreach($credit_cards as $credit_card)
+                                <option value="{{ $credit_card->id }}">{{ $credit_card->number }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="row mx-auto my-auto">
                         <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
                             <div id="carousel_user" class="carousel-inner w-100" role="listbox">
@@ -81,14 +90,14 @@
                                                             <div class="m-2">
                                                                 <div class="form-check form-check-radio form-check-inline">
                                                                     <label class="form-check-label">
-                                                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Clique para pagar
+                                                                        <input class="form-check-input" type="radio" name="user_to_id" id="user_to_id" value="{{ $users[$i]->id }}"> Clique para pagar
                                                                         <span class="form-check-sign"></span>
                                                                     </label>
                                                                 </div>
                                                                 <br><br>
                                                                 <div class="form-group">
                                                                     <label for="transaction_value">Valor (R$)</label>
-                                                                    <input type="text" class="form-control money" id="transaction_value" name="transaction_value">
+                                                                    <input type="text" class="form-control money" id="transaction_value" name="transaction_value" value="">
                                                                     <small id="emailHelp" class="form-text text-muted">Informe o valor para pagamento.</small>
                                                                 </div>
                                                             </div>

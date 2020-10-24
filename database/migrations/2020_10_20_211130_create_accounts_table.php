@@ -18,7 +18,6 @@ class CreateAccountsTable extends Migration
             $table->string('agency')->unique();
             $table->string('account_number')->unique();
             $table->string('account_dg');
-            $table->float('balance');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')

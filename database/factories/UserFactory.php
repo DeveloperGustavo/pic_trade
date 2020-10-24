@@ -23,11 +23,10 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        echo $this->faker->unique()->numberBetween(1, 2);
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique(true)->email,
-            'password' => Hash::make('123456'), // password
+            'password' => Hash::make('123456'),
             'perfil_id' => $this->faker->unique(true)->numberBetween(1, 2),
             'created_at' => now(),
             'updated_at' => now()

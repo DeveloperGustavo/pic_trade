@@ -1,10 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\CreditCardController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\{HomeController, TransactionController, CreditCardController, UserController};
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +61,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware(
 Route::prefix('transactions')->middleware('auth')->group(function()
 {
     Route::post('', [TransactionController::class, 'store'])->name('transaction.store');
+    Route::get('/extract', [TransactionController::class, 'index'])->name('transaction.index');
 });
 
 Route::prefix('credit-cards')->middleware('auth')->group(function()

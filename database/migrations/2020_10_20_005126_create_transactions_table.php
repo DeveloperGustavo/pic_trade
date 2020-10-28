@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->float('transaction_value');
+            $table->double('transaction_value');
             $table->unsignedBigInteger('credit_card_id');
             $table->foreign('credit_card_id')
                 ->references('id')

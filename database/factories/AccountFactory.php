@@ -25,7 +25,7 @@ class AccountFactory extends Factory
             'agency'            => $this->faker->unique(true)->numberBetween(0, 9999),
             'account_number'    => $this->faker->unique(true)->numberBetween(0, 99999),
             'account_dg'        => $this->faker->numberBetween(0, 10),
-            'user_id'           => $this->faker->unique(true)->numberBetween(1, 20),
+            'user_id'           => $this->faker->unique(true)->numberBetween(1, 100),
         ];
     }
 }

@@ -25,7 +25,7 @@ class TransactionRequest extends FormRequest
     {
         return [
             'credit_card_id'    => 'required',
-            'user_to_id'      => 'required',
+            'user_to_id'        => 'required',
             'transaction_value' => 'required'
         ];
     }

@@ -37,6 +37,35 @@
                     @include('layouts.navbars.navbar')
 
                     <div class="content">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="card card-chart">
+                                    <div class="card-header">
+                                        <h5 class="card-category">Dados bancários</h5>
+                                        <h6 class="card-title"><i class="tim-icons icon-minimal-right text-primary"></i> <b>Agência:</b> {{ $bank_information['account']['agency'] }} / <b>Conta:</b> {{ $bank_information['account']['account_number'] }}-{{ $bank_information['account']['account_dg'] }}</h6>
+                                        <h6 class="card-title"><i class="tim-icons icon-money-coins text-primary"></i>
+                                            Saldo atual: R$ <span style="@if($bank_information['balance'] < 0)color: red @else color: lightgreen @endif">{{ number_format($bank_information['balance'], 2, ',', '.') }}</span>
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card card-chart">
+                                    <div class="card-header">
+                                        <h5 class="card-category">Total em pagamentos</h5>
+                                        <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> R$ {{ number_format($bank_information['payments'], 2, ',', '.') }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card card-chart">
+                                    <div class="card-header">
+                                        <h5 class="card-category">Total recebido</h5>
+                                        <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> R$ {{ number_format($bank_information['received'], 2, ',', '.') }}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @yield('content')
                     </div>
 

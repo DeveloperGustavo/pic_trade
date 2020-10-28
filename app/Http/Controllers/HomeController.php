@@ -10,14 +10,17 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    protected $transaction;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Transaction $transaction)
     {
         $this->middleware('auth');
+        $this->transaction = $transaction;
     }
 
     /**
@@ -28,11 +31,7 @@ class HomeController extends Controller
     public function index()
     {
         $users = User::all();
-        $account = Account::where('user_id', Auth::id())->first();
-        $payments = Transaction::where('user_from_id', Auth::id())->sum('transaction_value');
-        $received = Transaction::where('user_to_id', Auth::id())->sum('transaction_value');
-        $balance = $received - $payments;
-        $credit_cards = CreditCard::where('user_id', Auth::id())->get();
-        return view('dashboard', compact('users', 'account', 'balance', 'payments', 'received', 'credit_cards'));
+        $bank_information = $this->transaction->bankInformation(Auth::id());
+        return view('dashboard', compact('users', 'bank_information'));
     }
 }

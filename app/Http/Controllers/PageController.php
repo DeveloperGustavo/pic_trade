@@ -73,4 +73,14 @@ class PageController extends Controller
     {
         return view('pages.upgrade');
     }
+
+    /**
+     * Display upgrade page
+     *
+     * @return \Illuminate\View\View
+     */
+    public function extract()
+    {
+        return view('pages.extract');
+    }
 }

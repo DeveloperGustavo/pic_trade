@@ -2,36 +2,6 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-4">
-            <div class="card card-chart">
-                <div class="card-header">
-                    <h5 class="card-category">Dados bancários</h5>
-                    <h6 class="card-title"><i class="tim-icons icon-minimal-right text-primary"></i> <b>Agência:</b> {{ $account->agency }} / <b>Conta:</b> {{ $account->account_number }}-{{ $account->account_dg }}</h6>
-                    <h6 class="card-title"><i class="tim-icons icon-money-coins text-primary"></i>
-                        Saldo atual: R$ <span style="@if($balance < 0)color: red @else color: lightgreen @endif">{{ number_format($balance, 2, ',', '.') }}</span>
-                    </h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card card-chart">
-                <div class="card-header">
-                    <h5 class="card-category">Total em pagamentos</h5>
-                    <h3 class="card-title"><i class="tim-icons icon-bell-55 text-primary"></i> R$ {{ number_format($payments, 2, ',', '.') }}</h3>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="card card-chart">
-                <div class="card-header">
-                    <h5 class="card-category">Total recebido</h5>
-                    <h3 class="card-title"><i class="tim-icons icon-send text-success"></i> R$ {{ number_format($received, 2, ',', '.') }}</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
         <div class="card">
             <div style="margin-left: 10px; margin-top: 10px">
                 <h3>Realizar transfrência</h3>
@@ -41,7 +11,7 @@
                 <form action="">
                     <div class="row">
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="search" name="search" placeholder="Faça sua pesquisa">
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Pesquise um amigo para pagar">
                         </div>
                         <div class="col-md-2">
                             <button class="btn btn-primary" type="button" onclick="enable_loader()"><i class="tim-icons icon-zoom-split"></i></button>
@@ -52,15 +22,7 @@
                 <form action="{{ route('transaction.store') }}" method="POST">
                     <div class="loader"></div>
                     @csrf
-                    <div class="form-group">
-                        <label for="credit_card_id">Selecione o cartão de crédito</label>
-                        <select class="form-control" id="credit_card_id" name="credit_card_id">
-                            <option value="" selected disabled>- Selecione -</option>
-                            @foreach($credit_cards as $credit_card)
-                                <option value="{{ $credit_card->id }}">{{ $credit_card->number }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+
                     <div class="row mx-auto my-auto">
                         <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
                             <div id="carousel_user" class="carousel-inner w-100" role="listbox">
@@ -94,12 +56,6 @@
                                                                         <span class="form-check-sign"></span>
                                                                     </label>
                                                                 </div>
-                                                                <br><br>
-                                                                <div class="form-group">
-                                                                    <label for="transaction_value">Valor (R$)</label>
-                                                                    <input type="text" class="form-control money" id="transaction_value" name="transaction_value" value="">
-                                                                    <small id="emailHelp" class="form-text text-muted">Informe o valor para pagamento.</small>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -120,6 +76,25 @@
                             </a>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="credit_card_id">Selecione o cartão de crédito</label>
+                            <select class="form-control" id="credit_card_id" name="credit_card_id">
+                                <option value="" selected disabled>- Selecione -</option>
+                                @foreach($bank_information['credit_cards'] as $key => $value)
+                                    @foreach($value as $credit_card)
+                                        <option value="{{ $credit_card->id }}">{{ $credit_card->number }}</option>
+                                    @endforeach
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label for="transaction_value">Informe o valor para pagamento (R$)</label>
+                            <input type="text" class="form-control money" name="transaction_value" id="transaction_value">
+                        </div>
+                    </div>
+
                     <div class="row">
 
                     </div>
@@ -138,85 +113,85 @@
             demo.initDashboardPageCharts();
         });
 
-        function enable_loader()
-        {
-            $('#carousel_user').hide();
-            $('#carousel_user').html("");
-            $('.loader').show();
+        {{--function enable_loader()--}}
+        {{--{--}}
+        {{--    $('#carousel_user').hide();--}}
+        {{--    $('#carousel_user').html("");--}}
+        {{--    $('.loader').show();--}}
 
-            var param = $('#search').val();
+        {{--    var param = $('#search').val();--}}
 
-            $.ajax({
-                method: "GET",
-                url: '{{ route('users.index') }}',
-                data:
-                    {
-                        "param": param
-                    },
-                success: function (e)
-                {
-                    var i = 0;
-                    $.each(e, function()
-                    {
-                        const div = document.createElement('div');
-                        var a = div;
-                        console.log(a);
-                        console.log('merda');
-                        if(i <= 0)
-                            div.className = 'carousel-item active';
-                        else
-                            div.className = 'carousel-item';
-                        console.log(div);
-                        div.innerHTML =
-                            '   <div class="col-md-4">' +
-                            '      <div class="card card-body">' +
-                            '         <div class="col-md-12">' +
-                            '            <div class="card card-user">' +
-                            '               <div class="card-body">' +
-                            '                  <p class="card-text">' +
-                            '                  </p>' +
-                            '                  <div class="author">' +
-                            '                     <div class="block block-one"></div>' +
-                            '                     <div class="block block-two"></div>' +
-                            '                     <div class="block block-three"></div>' +
-                            '                     <div class="block block-four"></div>' +
-                            '                     <a href="#">' +
-                            '                        <img class="avatar" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQq2nCYcpvp7zv81gos09TJ3Z_-HpoqFjHJaw&usqp=CAU" alt="">' +
-                            '                        <h5 class="title">' + e[i].name + '</h5>' +
-                            '                     </a>' +
-                            '                  </div>' +
-                            '               </div>' +
-                            '               <div class="m-2">' +
-                            '                  <div class="form-check form-check-radio form-check-inline">' +
-                            '                     <label class="form-check-label">' +
-                            '                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Clique para pagar' +
-                            '                     <span class="form-check-sign"></span>' +
-                            '                     </label>' +
-                            '                  </div>' +
-                            '                  <br><br>' +
-                            '                  <div class="form-group">' +
-                            '                     <label for="transaction_value">Valor (R$)</label>' +
-                            '                     <input type="text" class="form-control money" id="transaction_value" name="transaction_value">' +
-                            '                     <small id="emailHelp" class="form-text text-muted">Informe o valor para pagamento.</small>' +
-                            '                  </div>' +
-                            '               </div>' +
-                            '            </div>' +
-                            '         </div>' +
-                            '      </div>' +
-                            '   </div>';
-                        i++;
-                        document.getElementById('carousel_user').appendChild(div);
-                    });
-                    console.log(document.getElementById('carousel_user'));
-                    $('.loader').hide();
-                    $('#carousel_user').show();
-                },
-                error: function(e) {
-                    console.log('Erro na chamada ' + e);
-                }
-            })
+        {{--    $.ajax({--}}
+        {{--        method: "GET",--}}
+        {{--        url: '{{ route('users.index') }}',--}}
+        {{--        data:--}}
+        {{--            {--}}
+        {{--                "param": param--}}
+        {{--            },--}}
+        {{--        success: function (e)--}}
+        {{--        {--}}
+        {{--            var i = 0;--}}
+        {{--            $.each(e, function()--}}
+        {{--            {--}}
+        {{--                const div = document.createElement('div');--}}
+        {{--                var a = div;--}}
+        {{--                console.log(a);--}}
+        {{--                console.log('merda');--}}
+        {{--                if(i <= 0)--}}
+        {{--                    div.className = 'carousel-item active';--}}
+        {{--                else--}}
+        {{--                    div.className = 'carousel-item';--}}
+        {{--                console.log(div);--}}
+        {{--                div.innerHTML =--}}
+        {{--                    '   <div class="col-md-4">' +--}}
+        {{--                    '      <div class="card card-body">' +--}}
+        {{--                    '         <div class="col-md-12">' +--}}
+        {{--                    '            <div class="card card-user">' +--}}
+        {{--                    '               <div class="card-body">' +--}}
+        {{--                    '                  <p class="card-text">' +--}}
+        {{--                    '                  </p>' +--}}
+        {{--                    '                  <div class="author">' +--}}
+        {{--                    '                     <div class="block block-one"></div>' +--}}
+        {{--                    '                     <div class="block block-two"></div>' +--}}
+        {{--                    '                     <div class="block block-three"></div>' +--}}
+        {{--                    '                     <div class="block block-four"></div>' +--}}
+        {{--                    '                     <a href="#">' +--}}
+        {{--                    '                        <img class="avatar" src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQq2nCYcpvp7zv81gos09TJ3Z_-HpoqFjHJaw&usqp=CAU" alt="">' +--}}
+        {{--                    '                        <h5 class="title">' + e[i].name + '</h5>' +--}}
+        {{--                    '                     </a>' +--}}
+        {{--                    '                  </div>' +--}}
+        {{--                    '               </div>' +--}}
+        {{--                    '               <div class="m-2">' +--}}
+        {{--                    '                  <div class="form-check form-check-radio form-check-inline">' +--}}
+        {{--                    '                     <label class="form-check-label">' +--}}
+        {{--                    '                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> Clique para pagar' +--}}
+        {{--                    '                     <span class="form-check-sign"></span>' +--}}
+        {{--                    '                     </label>' +--}}
+        {{--                    '                  </div>' +--}}
+        {{--                    '                  <br><br>' +--}}
+        {{--                    '                  <div class="form-group">' +--}}
+        {{--                    '                     <label for="transaction_value">Valor (R$)</label>' +--}}
+        {{--                    '                     <input type="text" class="form-control money" id="transaction_value" name="transaction_value">' +--}}
+        {{--                    '                     <small id="emailHelp" class="form-text text-muted">Informe o valor para pagamento.</small>' +--}}
+        {{--                    '                  </div>' +--}}
+        {{--                    '               </div>' +--}}
+        {{--                    '            </div>' +--}}
+        {{--                    '         </div>' +--}}
+        {{--                    '      </div>' +--}}
+        {{--                    '   </div>';--}}
+        {{--                i++;--}}
+        {{--                document.getElementById('carousel_user').appendChild(div);--}}
+        {{--            });--}}
+        {{--            console.log(document.getElementById('carousel_user'));--}}
+        {{--            $('.loader').hide();--}}
+        {{--            $('#carousel_user').show();--}}
+        {{--        },--}}
+        {{--        error: function(e) {--}}
+        {{--            console.log('Erro na chamada ' + e);--}}
+        {{--        }--}}
+        {{--    })--}}
 
-        }
+        {{--}--}}
 
     </script>
 @endpush

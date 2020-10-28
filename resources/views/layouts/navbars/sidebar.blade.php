@@ -8,7 +8,7 @@
             <li @if ($pageSlug == 'dashboard') class="active " @endif>
                 <a href="{{ route('home') }}">
                     <i class="tim-icons icon-chart-pie-36"></i>
-                    <p>{{ __('Pagina inicial') }}</p>
+                    <p>{{ __('Início') }}</p>
                 </a>
             </li>
             <li @if ($pageSlug == 'extract') class="active " @endif>

@@ -13,4 +13,10 @@ class Transformation extends Model
     {
         return number_format(str_replace(",",".",str_replace(".","",$money)), 2, '.', '');
     }
+
+    public function negative($money)
+    {
+        $a = -abs(5.6);
+        return -abs($money);
+    }
 }

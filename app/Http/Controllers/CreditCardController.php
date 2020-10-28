@@ -4,12 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreditCardRequest;
 use App\Models\CreditCard;
+use App\Models\Transaction;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CreditCardController extends Controller
 {
+
+    protected $transaction;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Transaction $transaction)
+    {
+        $this->transaction = $transaction;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,7 +42,8 @@ class CreditCardController extends Controller
      */
     public function create()
     {
-        return view('credit_card.create');
+        $bank_information = $this->transaction->bankInformation(Auth::id());
+        return view('credit_card.create', compact('bank_information'));
     }
 
     /**

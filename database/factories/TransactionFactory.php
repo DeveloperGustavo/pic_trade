@@ -26,6 +26,7 @@ class TransactionFactory extends Factory
             'credit_card_id'    => $this->faker->unique(true)->numberBetween(1, 100),
             'user_from_id'      => $this->faker->numberBetween(1, 100),
             'user_to_id'        => $this->faker->numberBetween(1, 100),
+            'user_id'           => $this->faker->numberBetween(1,100)
         ];
     }
 }

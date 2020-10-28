@@ -1,4 +1,4 @@
-@extends('layouts.app', ['pageSlug' => 'dashboard'])
+@extends('layouts.app', ['pageSlug' => 'dashboard.dashboard'])
 
 @section('content')
     <div class="row">
@@ -103,6 +103,14 @@
             </div>
         </div>
     </div>
+    @if(isset($pagamento))
+        @include('dashboard.modal.payment_receipt')
+        <script>
+            $(window).load(function() {
+                $('#payment_receipt').modal('show');
+            });
+        </script>
+    @endif
 @endsection
 
 @push('js')

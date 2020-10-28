@@ -23,8 +23,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $extract = $this->transaction->extract(Auth::id());
-        return view('pages.extract', compact('extract'));
+        $bank_information = $this->transaction->bankInformation(Auth::id());
+        return view('pages.extract', compact('bank_information'));
     }
 
     /**
@@ -46,9 +46,10 @@ class TransactionController extends Controller
     public function store(TransactionRequest $request)
     {
         $money = $this->transformation->money($request->transaction_value);
+        $negative_money = $this->transformation->negative($money);
 //        Verifica se há saldo para pagamento
         try {
-            if ($this->transaction->bankInformation(Auth::id()) <= 0 or $this->transaction->bankInformation(Auth::id()) < $money) {
+            if ($this->transaction->bankInformation(Auth::id())['balance'] <= 0 or $this->transaction->bankInformation(Auth::id())['balance'] < $money) {
                 Toastr::error('Você não possui saldo para pagamento.', 'Ops!');
                 return back();
             }
@@ -60,13 +61,15 @@ class TransactionController extends Controller
 
 //        Inicia processo de transação
         $request->merge([
-            'transaction_value' => $money,
-            'user_from_id'      => Auth::id()
+            'transaction_value' => $negative_money,
+            'user_from_id'      => Auth::id(),
+            'user_id'           => Auth::id()
         ]);
         try {
             Transaction::create($request->all());
             Toastr::success('Pagamento realizado com sucesso!', 'Parabéns!');
-            return redirect()->route('home');
+            $pagamento = true;
+            return redirect()->route('home', compact('pagamento'));
         }
         catch (\Exception $e) {
             Toastr::error('Erro ao tentar realizar o pagamento.' . $e->getMessage(), 'Ops!');

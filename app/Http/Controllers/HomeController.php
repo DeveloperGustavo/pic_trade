@@ -32,6 +32,6 @@ class HomeController extends Controller
     {
         $users = User::all();
         $bank_information = $this->transaction->bankInformation(Auth::id());
-        return view('dashboard', compact('users', 'bank_information'));
+        return view('dashboard.dashboard', compact('users', 'bank_information'));
     }
 }

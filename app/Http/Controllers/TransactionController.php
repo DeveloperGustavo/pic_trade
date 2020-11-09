@@ -69,7 +69,7 @@ class TransactionController extends Controller
             Transaction::create($request->all());
             Toastr::success('Pagamento realizado com sucesso!', 'Parabéns!');
             $pagamento = true;
-            return redirect()->route('home', compact('pagamento'));
+            return redirect()->route('home')->with('pagamento', $pagamento);
         }
         catch (\Exception $e) {
             Toastr::error('Erro ao tentar realizar o pagamento.' . $e->getMessage(), 'Ops!');

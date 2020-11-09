@@ -2,12 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Transaction;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\PasswordRequest;
 
 class ProfileController extends Controller
 {
+
+    protected $transaction;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Transaction $transaction)
+    {
+        $this->transaction = $transaction;
+    }
+
     /**
      * Show the form for editing the profile.
      *
@@ -15,7 +31,9 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        return view('profile.edit');
+        $users = User::all();
+        $bank_information = $this->transaction->bankInformation(Auth::id());
+        return view('profile.edit', compact('users', 'bank_information'));
     }
 
     /**

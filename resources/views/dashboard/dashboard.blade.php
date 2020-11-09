@@ -103,19 +103,18 @@
             </div>
         </div>
     </div>
-    @if(isset($pagamento))
-        @include('dashboard.modal.payment_receipt')
-        <script>
-            $(window).load(function() {
-                $('#payment_receipt').modal('show');
-            });
-        </script>
-    @endif
 @endsection
 
 @push('js')
     <script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script>
     <script src="{{ asset('/js/carousel.js') }}"></script>
+    @if(isset($pagamento))
+        <script>
+            $(window).on('load',function(){
+                $('#payment_receipt').modal('show'); });
+        </script>
+        @include('dashboard.modal.payment_receipt')
+    @endif
     <script>
         $(document).ready(function() {
             demo.initDashboardPageCharts();

@@ -34,7 +34,7 @@ class TransactionRequest extends FormRequest
     {
         return [
             'credit_card_id.required'   => 'O cartão de crédito é obrigatório.',
-            'user_from_id'              => 'Informe um amigo para pagamento.',
+            'user_to_id'              => 'Informe um amigo para pagamento.',
             'transaction_value'         => 'Informe o valor que deseja efetuar o pagamento'
         ];
     }

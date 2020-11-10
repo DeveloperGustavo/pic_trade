@@ -10,10 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
-    public function __construct(Transformation $transformation, Transaction $transaction)
+    public function __construct(Transformation $transformation, Transaction $transaction, HomeController $home_controller)
     {
         $this->transformation   = $transformation;
         $this->transaction      = $transaction;
+        $this->home_controller  = $home_controller;
     }
 
     /**
@@ -49,7 +50,8 @@ class TransactionController extends Controller
         $negative_money = $this->transformation->negative($money);
 //        Verifica se há saldo para pagamento
         try {
-            if ($this->transaction->bankInformation(Auth::id())['balance'] <= 0 or $this->transaction->bankInformation(Auth::id())['balance'] < $money) {
+            if ($this->transaction->bankInformation(Auth::id())['balance'] <= 0 or
+                $this->transaction->bankInformation(Auth::id())['balance'] < $money) {
                 Toastr::error('Você não possui saldo para pagamento.', 'Ops!');
                 return back();
             }
@@ -62,14 +64,12 @@ class TransactionController extends Controller
 //        Inicia processo de transação
         $request->merge([
             'transaction_value' => $negative_money,
-            'user_from_id'      => Auth::id(),
             'user_id'           => Auth::id()
         ]);
         try {
-            Transaction::create($request->all());
+            $transaction = Transaction::create($request->all());
             Toastr::success('Pagamento realizado com sucesso!', 'Parabéns!');
-            $pagamento = true;
-            return redirect()->route('home')->with('pagamento', $pagamento);
+            return $this->home_controller->paymentIndex($transaction);
         }
         catch (\Exception $e) {
             Toastr::error('Erro ao tentar realizar o pagamento.' . $e->getMessage(), 'Ops!');

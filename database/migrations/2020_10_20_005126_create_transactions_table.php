@@ -22,12 +22,6 @@ class CreateTransactionsTable extends Migration
                 ->on('credit_cards')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
-            $table->unsignedBigInteger('user_from_id');
-            $table->foreign('user_from_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
             $table->unsignedBigInteger('user_to_id');
             $table->foreign('user_to_id')
                 ->references('id')

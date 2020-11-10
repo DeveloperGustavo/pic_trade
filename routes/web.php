@@ -55,8 +55,10 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
-Route::get('/home', [HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::prefix('home')->middleware('auth')->group(function ()
+{
+    Route::get('', [HomeController::class, 'index'])->name('home');
+});
 
 Route::prefix('transactions')->middleware('auth')->group(function()
 {

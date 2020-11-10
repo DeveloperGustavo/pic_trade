@@ -30,7 +30,7 @@
                                     @if($users[$i]->id == Auth::id())
                                     @else
                                         {{--carousel-item--}}
-                                        <div class="carousel-item @if($i <= 1) active @endif">
+                                        <div class="carousel-item @if($i < 1) active @endif">
                                             <div class="col-md-4">
                                                 <div class="card card-body">
                                                     <div class="col-md-12">
@@ -103,18 +103,17 @@
             </div>
         </div>
     </div>
+    @include('dashboard.modal.payment_receipt')
 @endsection
 
 @push('js')
+    @if(isset($payment))
+        <script>
+            $('#payment_receipt').modal('show');
+        </script>
+    @endif
     <script src="{{ asset('black') }}/js/plugins/chartjs.min.js"></script>
     <script src="{{ asset('/js/carousel.js') }}"></script>
-    @if(isset($pagamento))
-        <script>
-            $(window).on('load',function(){
-                $('#payment_receipt').modal('show'); });
-        </script>
-        @include('dashboard.modal.payment_receipt')
-    @endif
     <script>
         $(document).ready(function() {
             demo.initDashboardPageCharts();

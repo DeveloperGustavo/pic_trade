@@ -9,7 +9,16 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Tem certeza que deseja excluir o cartão de número</p>
+                @if(isset($transaction))
+                    <p><b>Transação: </b>{{ $transaction->id }}</p>
+                    <p><b>Data: </b>{{ date('d/m/Y h:m:s', strtotime($transaction->created_at)) }}</p>
+                    <p><b>Pagamento feito para: </b>{{ $user_to->name }}</p>
+                    <p><b>Pagamento feito de: </b>{{ $user_from->name }}</p>
+                    <hr>
+                    <p><b>Cartão: </b> {{ str_pad($credit_card->number, 5, STR_PAD_LEFT) }}</p>
+                    <p><b>Valor: </b>R$ {{ number_format(abs($transaction->transaction_value), 2, ',', '.')  }}</p>
+                    <hr>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
